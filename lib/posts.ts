@@ -37,6 +37,7 @@ export async function getPostBySlug(slug: string) {
 
   return {
     slug,
+    excerpt: content.slice(0, 150) + "...", // 👈 add excerpt
     contentHtml: processedContent.toString(),
     ...(matterResult.data as { date: string; title: string }),
   };
