@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth fonts & body defaults */
+html, body, #__next {
+  height: 100%;
+}
+body {
+  @apply bg-white text-gray-900 antialiased;
+  font-feature-settings: "kern";
+}
+
+/* Reusable utilities */
+.container-padded {
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+.card {
+  @apply rounded-2xl border border-gray-100 bg-white shadow-soft;
+}
+.card-hover {
+  @apply transition-transform hover:-translate-y-1 hover:shadow-lg;
+}
+/* Prism.js custom styling */
+pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+code {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+}
+
+/* Dark mode tweak */
+.dark pre {
+  background: #0f172a; /* slate-900 */
+  color: #e2e8f0; /* slate-200 */
+}

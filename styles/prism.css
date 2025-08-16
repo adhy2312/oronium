@@ -1,0 +1,36 @@
+/* Base PrismJS theme with dark neon style */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #e0e0e0;
+  background: #0a0a0a;
+  font-family: "Fira Code", "Consolas", monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  box-shadow: 0 0 20px rgba(20, 241, 217, 0.2);
+}
+
+/* Neon glowing keywords */
+.token.keyword {
+  color: #14f1d9;
+  text-shadow: 0 0 5px #14f1d9;
+}
+
+.token.string {
+  color: #ff8c8c;
+}
+
+.token.function {
+  color: #ffd369;
+}
+
+.token.comment {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.token.number {
+  color: #f78c6c;
+}
