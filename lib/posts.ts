@@ -1,44 +1,46 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
-import remarkRehype from "remark-rehype";
-import rehypePrism from "rehype-prism-plus";
-import rehypeStringify from "rehype-stringify"; // ✅ we will keep it, but must install
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
-export function getAllPosts() {
-  const fileNames = fs.readdirSync(postsDirectory);
-  return fileNames.map((fileName) => {
-    const slug = fileName.replace(/\.md$/, "");
-    const fullPath = path.join(postsDirectory, fileName);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const matterResult = matter(fileContents);
-
-    return {
-      slug,
-      ...(matterResult.data as { date: string; title: string }),
-    };
-  });
+export function getPostSlugs() {
+  return fs.readdirSync(postsDirectory);
 }
 
-export async function getPostBySlug(slug: string) {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+export function getPostBySlug(slug: string, fields: string[] = []) {
+  const realSlug = slug.replace(/\.md$/, "");
+  const fullPath = path.join(postsDirectory, `${realSlug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
-  const matterResult = matter(fileContents);
+  const { data, content } = matter(fileContents);
 
-  const processedContent = await remark()
-    .use(remarkRehype) // convert md → HTML AST
-    .use(rehypePrism) // add syntax highlighting
-    .use(rehypeStringify) // convert AST → HTML string
-    .process(matterResult.content);
+  let excerpt = content.substring(0, 160).replace(/\n/g, " ") + "...";
 
-  return {
-    slug,
-    excerpt: content.slice(0, 150) + "...", // 👈 add excerpt
-    contentHtml: processedContent.toString(),
-    ...(matterResult.data as { date: string; title: string }),
-  };
+  const items: any = {};
+
+  fields.forEach((field) => {
+    if (field === "slug") {
+      items[field] = realSlug;
+    }
+    if (field === "content") {
+      items[field] = content;
+    }
+    if (field === "excerpt") {
+      items[field] = excerpt;
+    }
+    if (data[field]) {
+      items[field] = data[field];
+    }
+  });
+
+  return items;
+}
+
+export function getAllPosts() {
+  const slugs = getPostSlugs();
+  const posts = slugs.map((slug) =>
+    getPostBySlug(slug, ["title", "date", "slug", "excerpt"])
+  );
+
+  return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
 }
