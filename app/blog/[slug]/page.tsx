@@ -23,7 +23,13 @@ export default async function BlogPostPage({ params }: PostPageProps) {
           {post.title}
         </h1>
         <p className="text-gray-400 mb-10">{post.date}</p>
-        <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
+
+        {/* ✅ Ensure __html is always a string */}
+        <div
+          dangerouslySetInnerHTML={{
+            __html: post.contentHtml || "",
+          }}
+        />
       </article>
     </main>
   );
