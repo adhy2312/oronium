@@ -1,7 +1,8 @@
 import { getAllPosts, getPostBySlug } from "../../../lib/posts";
 
+// Fix: params can be a Promise in Next.js 15
 interface PostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -10,7 +11,10 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: PostPageProps) {
-  const post = await getPostBySlug(params.slug);
+  // ✅ Await params because it might be a Promise
+  const { slug } = await params;
+
+  const post = await getPostBySlug(slug);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-6 py-16">

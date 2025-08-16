@@ -38,6 +38,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19",
+    "eslint": "^9.33.0",
     "tailwindcss": "^4.1.12",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5.9.2"
